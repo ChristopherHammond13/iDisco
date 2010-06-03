@@ -1,0 +1,1 @@
+irecovery -l exitrecovery.commandlist
