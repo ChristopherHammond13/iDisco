@@ -35,6 +35,23 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim iTunesMDReg As String
+        iTunesMDReg = Microsoft.Win32.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Apple Inc.\Apple Mobile Device Support\Shared", "iTunesMobileDeviceDLL", "C:\Program Files\Common Files\Apple\Mobile Device Support\iTunesMobileDevice2.dll").ToString()
+        If System.IO.File.Exists(My.Application.Info.DirectoryPath + "\iTunesMobileDevice.dll") Then
+        Else
+            System.IO.File.Copy(iTunesMDReg, My.Application.Info.DirectoryPath + "\iTunesMobileDevice.dll")
+        End If
+        If System.IO.File.Exists(My.Application.Info.DirectoryPath + "\ASL.dll") Then
+        Else
+            ChDir(My.Application.Info.DirectoryPath)
+            'ChDir(iTunesMDReg + "..\..\..\Apple Application Support")
+            Dim WshShell As New WshShell
+            Dim strCommand As String
+            Dim AppleAPPSupport As String
+            AppleAPPSupport = Microsoft.Win32.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Apple Inc.\Apple Application Support", "InstallDir", "C:\Program Files\Common Files\Apple\Apple Application Support\")
+            strCommand = "getfiles.bat " + Chr(34) + AppleAPPSupport + Chr(34) + " " + Chr(34) + My.Application.Info.DirectoryPath + Chr(34)
+            WshShell.Run(strCommand, vbHide, vbTrue)
+        End If
         Dim RandomClass2 As New Random()
         Dim RandomBG As Integer = RandomClass2.Next(1, 5)
         Select Case RandomBG
